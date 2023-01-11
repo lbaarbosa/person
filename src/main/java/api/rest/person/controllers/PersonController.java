@@ -2,6 +2,7 @@ package api.rest.person.controllers;
 
 import api.rest.person.dtos.requests.PersonDTO;
 import api.rest.person.dtos.responses.ResponseMessageDTO;
+import api.rest.person.exceptions.PersonNotFoundException;
 import api.rest.person.services.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public PersonDTO findById(Long id) {
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
         return personService.findById(id);
     }
 
@@ -30,13 +31,13 @@ public class PersonController {
     public List<PersonDTO> listAll() { return personService.listAll(); }
 
     @PutMapping("/{id}")
-    public ResponseMessageDTO updateById(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+    public ResponseMessageDTO updateById(@PathVariable Long id, @RequestBody PersonDTO personDTO) throws PersonNotFoundException {
         return personService.updateById(id, personDTO);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Long id) throws PersonNotFoundException {
         personService.delete(id);
     }
 }
